@@ -8,14 +8,14 @@
     "theme_color": "#10b981",
     "icons": [
         {
-            "src": "icons/icon-192.png",
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%230a0a0a'/%3E%3Ccircle cx='96' cy='96' r='70' fill='none' stroke='%2310b981' stroke-width='8'/%3E%3Cpath d='M60 96 L80 116 L132 64' stroke='%2310b981' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/svg+xml"
         },
         {
-            "src": "icons/icon-512.png",
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230a0a0a'/%3E%3Ccircle cx='256' cy='256' r='180' fill='none' stroke='%2310b981' stroke-width='16'/%3E%3Cpath d='M160 256 L220 320 L360 180' stroke='%2310b981' stroke-width='24' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/svg+xml"
         }
     ]
 }
