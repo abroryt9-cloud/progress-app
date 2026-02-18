@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress — Аналитика</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%2310b981' stroke-width='2'/%3E%3Cpath d='M10 16 L14 20 L22 10' stroke='%2310b981' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" type="image/svg+xml">
+    <style>
+        /* Дополнительные стили для аналитики */
+        .analytics-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .back-btn {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #e8e8e8;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+        
+        .chart-container {
+            background: #111;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid #222;
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        
+        .week-chart {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 200px;
+            gap: 8px;
+        }
+        
+        .chart-bar-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chart-bar {
+            width: 100%;
+            background: linear-gradient(180deg, #10b981 0%, #0a8 100%);
+            border-radius: 8px 8px 0 0;
+            transition: height 1s ease;
+            min-height: 4px;
+        }
+        
+        .chart-label {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .chart-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #10b981;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card-large {
+            background: #111;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #222;
+            grid-column: span 2;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #222;
+        }
+        
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-name {
+            color: #888;
+        }
+        
+        .stat-number {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .category-progress {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .category-name {
+            color: #fff;
+            font-weight: 500;
+        }
+        
+        .category-percent {
+            color: #10b981;
+        }
+        
+        .category-bar {
+            height: 6px;
+            background: #222;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .category-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #0a8);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        
+        .prediction-card {
+            background: linear-gradient(145deg, #10b98110, #0a8a0a10);
+            border: 1px solid #10b98130;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .prediction-title {
+            color: #10b981;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .prediction-date {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        
+        .prediction-text {
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Шапка с кнопкой назад -->
+        <div class="analytics-header">
+            <a href="javascript:history.back()" class="back-btn">← Назад</a>
+            <h1 class="greeting">Аналитика</h1>
+        </div>
+
+        <!-- График активности за неделю -->
+        <div class="chart-container">
+            <div class="chart-title">Активность за последние 7 дней</div>
+            <div class="week-chart" id="weekChart">
+                <!-- Будет заполнено через JS -->
+            </div>
+        </div>
+
+        <!-- Ключевые показатели -->
+        <div class="stats-grid">
+            <div class="stat-card-large">
+                <div class="stat-row">
+                    <span class="stat-name">Всего задач за всё время</span>
+                    <span class="stat-number" id="totalAllTime">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-name">Выполнено задач</span>
+                    <span class="stat-number" id="completedAllTime">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-name">Процент выполнения</span>
+                    <span class="stat-number" id="completionRate">0%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-name">Лучший день</span>
+                    <span class="stat-number" id="bestDayEver">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-name">Текущая серия</span>
+                    <span class="stat-number" id="currentStreak">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-name">Максимальная серия</span>
+                    <span class="stat-number" id="maxStreak">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Анализ по категориям -->
+        <div class="chart-container">
+            <div class="chart-title">Продуктивность по категориям</div>
+            <div id="categoriesContainer">
+                <!-- Динамические категории -->
+            </div>
+        </div>
+
+        <!-- Прогноз -->
+        <div class="prediction-card" id="predictionCard">
+            <div class="prediction-title">🔮 AI-прогноз</div>
+            <div class="prediction-date" id="predictionDate">25 марта 2026</div>
+            <div class="prediction-text" id="predictionText">При текущем темпе ты достигнешь цели</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Данные для графика (последние 7 дней)
+        function generateWeekData() {
+            const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            const chart = document.getElementById('weekChart');
+            
+            if (!chart) return;
+            
+            chart.innerHTML = '';
+            
+            // Получаем реальные данные из localStorage или генерируем тестовые
+            const tasks = JSON.parse(localStorage.getItem('progress-tasks')) || [];
+            const completedCount = tasks.filter(t => t.completed).length;
+            
+            // Генерируем тестовые данные для графика
+            days.forEach((day, index) => {
+                const value = Math.floor(Math.random() * 10) + 1; // Случайное число от 1 до 10
+                const height = value * 18; // Высота столбца
+                
+                const barContainer = document.createElement('div');
+                barContainer.className = 'chart-bar-container';
+                
+                const barValue = document.createElement('span');
+                barValue.className = 'chart-value';
+                barValue.textContent = value;
+                
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = height + 'px';
+                
+                const label = document.createElement('span');
+                label.className = 'chart-label';
+                label.textContent = day;
+                
+                barContainer.appendChild(barValue);
+                barContainer.appendChild(bar);
+                barContainer.appendChild(label);
+                
+                chart.appendChild(barContainer);
+            });
+        }
+
+        // Обновление аналитики
+        function updateDetailedAnalytics() {
+            const tasks = JSON.parse(localStorage.getItem('progress-tasks')) || [];
+            
+            // Общая статистика
+            const totalTasks = tasks.length;
+            const completedTasks = tasks.filter(t => t.completed).length;
+            const completionRate = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+            
+            document.getElementById('totalAllTime').textContent = totalTasks;
+            document.getElementById('completedAllTime').textContent = completedTasks;
+            document.getElementById('completionRate').textContent = completionRate + '%';
+            
+            // Тестовые данные для серий
+            document.getElementById('currentStreak').textContent = tasks.some(t => !t.completed) ? 3 : 5;
+            document.getElementById('maxStreak').textContent = 12;
+            document.getElementById('bestDayEver').textContent = 15;
+            
+            // Категории (тестовые)
+            const categories = [
+                { name: 'Работа', percent: 55, tasks: 78 },
+                { name: 'Здоровье', percent: 24, tasks: 34 },
+                { name: 'Личное', percent: 21, tasks: 30 }
+            ];
+            
+            const categoriesContainer = document.getElementById('categoriesContainer');
+            categoriesContainer.innerHTML = categories.map(cat => `
+                <div class="category-progress">
+                    <div class="category-header">
+                        <span class="category-name">${cat.name}</span>
+                        <span class="category-percent">${cat.percent}%</span>
+                    </div>
+                    <div class="category-bar">
+                        <div class="category-fill" style="width: ${cat.percent}%"></div>
+                    </div>
+                    <div style="margin-top: 8px; color: #666; font-size: 13px;">${cat.tasks} задач выполнено</div>
+                </div>
+            `).join('');
+            
+            // Прогноз
+            const today = new Date();
+            const futureDate = new Date();
+            futureDate.setDate(today.getDate() + 7);
+            
+            document.getElementById('predictionDate').textContent = futureDate.toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            
+            document.getElementById('predictionText').textContent = 
+                totalTasks === 0 ? 
+                'Добавь первые задачи, чтобы увидеть прогноз' : 
+                'При текущем темпе ты достигнешь цели через 7 дней';
+        }
+
+        // Запуск при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            generateWeekData();
+            updateDetailedAnalytics();
+        });
+    </script>
+</body>
+  </html>
