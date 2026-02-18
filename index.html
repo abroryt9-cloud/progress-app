@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress — дневник достижений</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Шапка -->
+        <header class="header">
+            <h1 class="greeting">Доброе утро</h1>
+            <p class="date" id="currentDate"></p>
+        </header>
+
+        <!-- Прогресс дня -->
+        <div class="progress-card">
+            <div class="progress-header">
+                <span class="progress-title">Сегодня</span>
+                <span class="progress-percent" id="todayPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="todayProgress" style="width: 0%"></div>
+            </div>
+            <div class="progress-stats">
+                <span id="completedTasks">0</span>/<span id="totalTasks">0</span> задач выполнено
+            </div>
+        </div>
+
+        <!-- Список задач -->
+        <div class="tasks-section">
+            <h2>Задачи на сегодня</h2>
+            <div class="tasks-list" id="tasksList">
+                <!-- Сюда будут добавляться задачи через JS -->
+            </div>
+            
+            <button class="add-task-btn" id="addTaskBtn">
+                <span class="plus-icon">+</span> Добавить задачу
+            </button>
+        </div>
+
+        <!-- Привычки в процессе -->
+        <div class="habits-section">
+            <h2>Привычки в процессе</h2>
+            <div class="habits-list" id="habitsList">
+                <div class="habit-item">
+                    <span class="habit-name">🔥 Ранний подъём</span>
+                    <span class="habit-streak">12 дней</span>
+                </div>
+                <div class="habit-item">
+                    <span class="habit-name">🎯 Спорт</span>
+                    <span class="habit-streak">8/30</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Быстрая аналитика -->
+        <div class="analytics-section">
+            <h2>Аналитика</h2>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <span class="analytics-value" id="monthlyTasks">0</span>
+                    <span class="analytics-label">задач за месяц</span>
+                </div>
+                <div class="analytics-card">
+                    <span class="analytics-value" id="bestDay">0</span>
+                    <span class="analytics-label">лучший день</span>
+                </div>
+                <div class="analytics-card">
+                    <span class="analytics-value" id="streak">0</span>
+                    <span class="analytics-label">дней подряд</span>
+                </div>
+            </div>
+            <button class="analytics-btn" onclick="location.href='analytics.html'">
+                📊 Полная аналитика
+            </button>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления задачи -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <h3>Новая задача</h3>
+            <input type="text" id="taskInput" placeholder="Например: Позвонить клиенту" autocomplete="off">
+            <div class="modal-buttons">
+                <button class="modal-cancel" onclick="closeModal()">Отмена</button>
+                <button class="modal-save" onclick="addNewTask()">Добавить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
